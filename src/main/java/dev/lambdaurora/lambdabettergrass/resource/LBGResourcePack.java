@@ -14,12 +14,12 @@ import com.mojang.blaze3d.texture.NativeImage;
 import dev.lambdaurora.lambdabettergrass.LambdaBetterGrass;
 import net.minecraft.resource.ResourceType;
 import net.minecraft.util.Identifier;
-import org.quiltmc.qsl.resource.loader.api.InMemoryResourcePack;
+import org.quiltmc.qsl.resource.loader.api.InMemoryPack;
 
 import java.io.IOException;
 import java.util.Set;
 
-public class LBGResourcePack extends InMemoryResourcePack {
+public class LBGResourcePack extends InMemoryPack {
 	private static final Set<String> NAMESPACES = Sets.newHashSet(LambdaBetterGrass.NAMESPACE);
 
 	private final LambdaBetterGrass mod;

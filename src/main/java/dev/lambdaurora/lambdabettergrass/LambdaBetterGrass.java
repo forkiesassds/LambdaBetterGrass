@@ -24,8 +24,8 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.quiltmc.loader.api.ModContainer;
 import org.quiltmc.qsl.base.api.entrypoint.client.ClientModInitializer;
+import org.quiltmc.qsl.resource.loader.api.PackActivationType;
 import org.quiltmc.qsl.resource.loader.api.ResourceLoader;
-import org.quiltmc.qsl.resource.loader.api.ResourcePackActivationType;
 import org.quiltmc.qsl.resource.loader.api.client.ClientResourceLoaderEvents;
 import org.slf4j.Logger;
 
@@ -38,7 +38,7 @@ import java.nio.file.Path;
  * @version 1.5.2
  * @since 1.0.0
  */
-public class LambdaBetterGrass implements ClientModInitializer, ClientResourceLoaderEvents.EndResourcePackReload {
+public class LambdaBetterGrass implements ClientModInitializer, ClientResourceLoaderEvents.EndPackReload {
 	public static final String NAMESPACE = "lambdabettergrass";
 	public static final Logger LOGGER = LogUtils.getLogger();
 	/* Default masks */
@@ -58,10 +58,10 @@ public class LambdaBetterGrass implements ClientModInitializer, ClientResourceLo
 		this.log("Initializing LambdaBetterGrass...");
 		this.config.load();
 
-		ResourceLoader.registerBuiltinResourcePack(id("default"), mod, ResourcePackActivationType.DEFAULT_ENABLED);
-		ResourceLoader.registerBuiltinResourcePack(id("32x"), mod, ResourcePackActivationType.NORMAL);
+		ResourceLoader.registerBuiltinPack(id("default"), mod, PackActivationType.DEFAULT_ENABLED);
+		ResourceLoader.registerBuiltinPack(id("32x"), mod, PackActivationType.NORMAL);
 
-		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).getRegisterTopResourcePackEvent()
+		ResourceLoader.get(ResourceType.CLIENT_RESOURCES).getRegisterTopPackEvent()
 				.register(id("register_pack"), context -> {
 					this.log("Rebuilding resources and inject generated resource pack.");
 					context.addResourcePack(this.resourcePack = new LBGResourcePack(this));
@@ -97,7 +97,7 @@ public class LambdaBetterGrass implements ClientModInitializer, ClientResourceLo
 	}
 
 	@Override
-	public void onEndResourcePackReload(ClientResourceLoaderEvents.EndResourcePackReload.Context context) {
+	public void onEndPackReload(ClientResourceLoaderEvents.EndPackReload.Context context) {
 		if (this.config.isDebug()) {
 			this.resourcePack.dumpTo(Path.of("debug/lbg_out"));
 		}
